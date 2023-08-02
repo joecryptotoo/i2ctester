@@ -8,15 +8,13 @@ from adafruit_atecc.adafruit_atecc import ATECC, _WAKE_CLK_FREQ
 
 parser = argparse.ArgumentParser(description='Description of your script.')
 parser.add_argument('-i','--iterations', help='Number of iterations to run', required=False, default=100)
-parser.add_argument('-s','--slot', help='slot to use', required=False, default='0')
+parser.add_argument('-s','--slot', help='slot to use', required=False, default=0)
 parser.add_argument('-a','--i2c_address', help='i2c address to use', required=False, default='0x60')
 parser.add_argument('-f','--frequency', help='i2c bus frequency', required=False, default=_WAKE_CLK_FREQ)
 parser.add_argument('-r','--random', help='use 32 bytes of random data', action=argparse.BooleanOptionalAction, required=False, default=False)
 parser.add_argument('-d','--debug', help='enable or disable debug', action=argparse.BooleanOptionalAction, required=False, default=False)
 arg = parser.parse_args()
 
-slotId = int(arg.slot)
-it = int(arg.iterations)
 i2c = busio.I2C(board.SCL, board.SDA, frequency=arg.frequency)
 
 atecc = ATECC(i2c,address=int(arg.i2c_address,16),debug=arg.debug)
@@ -24,7 +22,7 @@ atecc = ATECC(i2c,address=int(arg.i2c_address,16),debug=arg.debug)
 results = []
 
 if arg.debug:
-    print("Public Key: ", atecc.gen_key(bytearray(64),slotId).hex())
+    print("Public Key: ", atecc.gen_key(bytearray(64),arg.slot).hex())
 
 def sign(loop):
     first = time.perf_counter()
@@ -38,7 +36,7 @@ def sign(loop):
     if arg.debug:
         print("Data: ", data.hex())
 
-    sig = atecc.ecdsa_sign(slotId,data)
+    sig = atecc.ecdsa_sign(arg.slot,data)
     
     if arg.debug:
         print("Signature: ", sig.hex())
@@ -49,14 +47,14 @@ def sign(loop):
     results.append(delta)
 
 def run():
-    for i in range(0, it):
+    for i in range(0, arg.iterations):
         sign(i)
         time.sleep(0.001) 
     low =  min(results)
     high = max(results)
     average = sum(results) / len(results)
     avdelta = (high - low)
-    print(f"Count: {it}\nLowest: {low:.2f}ms\nHighest: {high:.2f}ms\nAverage: {average:.2f}ms\nAverage Delta: {avdelta:.2f}ms")
+    print(f"Count: {arg.iterations}\nLowest: {low:.2f}ms\nHighest: {high:.2f}ms\nAverage: {average:.2f}ms\nAverage Delta: {avdelta:.2f}ms")
 
 if __name__ == "__main__":
     print("ATECC Serial: ", atecc.serial_number)
