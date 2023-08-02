@@ -35,7 +35,8 @@ def sign(loop):
         # with 32 bytes of 0x00
         data = b'\x00' * 32
 
-    print("Data: ", data.hex())
+    if arg.debug:
+        print("Data: ", data.hex())
 
     sig = atecc.ecdsa_sign(slotId,data)
     
