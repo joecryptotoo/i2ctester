@@ -17,7 +17,7 @@ arg = parser.parse_args()
 
 slotId = int(arg.slot)
 it = int(arg.iterations)
-i2c = busio.I2C(board.SCL, board.SDA, frequency=_WAKE_CLK_FREQ)
+i2c = busio.I2C(board.SCL, board.SDA, frequency=arg.frequency)
 
 atecc = ATECC(i2c,address=int(arg.i2c_address,16),debug=arg.debug)
 
