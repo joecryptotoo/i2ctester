@@ -54,7 +54,7 @@ def run():
     high = max(results)
     average = sum(results) / len(results)
     avdelta = (high - low)
-    print(f"Count: {arg.iterations}\nLowest: {low:.2f}ms\nHighest: {high:.2f}ms\nAverage: {average:.2f}ms\nAverage Delta: {avdelta:.2f}ms")
+    print(f"Frequency: {arg.frequency}\nCount: {arg.iterations}\nLowest: {low:.2f}ms\nHighest: {high:.2f}ms\nAverage: {average:.2f}ms\nAverage Delta: {avdelta:.2f}ms")
 
 if __name__ == "__main__":
     print("ATECC Serial: ", atecc.serial_number)
