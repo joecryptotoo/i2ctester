@@ -11,6 +11,7 @@ parser.add_argument('-i','--iterations', help='Number of iterations to run', req
 parser.add_argument('-s','--slot', help='slot to use', required=False, default='0')
 parser.add_argument('-a','--i2c_address', help='i2c address to use', required=False, default='0x60')
 parser.add_argument('-r','--random', help='use 32 bytes of random data', required=False, default=False)
+parser.add_argument('-d','--debug', help='enable or disable debug', required=False, default=False)
 arg = parser.parse_args()
 
 slotId = int(arg.slot)
@@ -21,8 +22,8 @@ atecc = ATECC(i2c,address=int(arg.i2c_address,16),debug=True)
 
 results = []
 
-# print the public key
-print("Public Key: ", atecc.gen_key(bytearray(64),slotId).hex())
+if arg.debug:
+    print("Public Key: ", atecc.gen_key(bytearray(64),slotId).hex())
 
 def sign(loop):
     first = time.perf_counter()
@@ -36,8 +37,9 @@ def sign(loop):
     print("Data: ", data.hex())
 
     sig = atecc.ecdsa_sign(slotId,data)
-
-    print("Signature: ", sig.hex())
+    
+    if arg.debug:
+        print("Signature: ", sig.hex())
 
     last = time.perf_counter()
     delta = (last - first )* 1000
