@@ -13,4 +13,4 @@ services:
       - SYS_RAWIO
     devices:
       - /dev/i2c-1:/dev/i2c-1
-    command: python /usr/src/app/main.py
+    command: python /usr/src/app/main.py -d -i 50
