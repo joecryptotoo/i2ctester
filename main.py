@@ -47,7 +47,7 @@ def sign(loop):
     results.append(delta)
 
 def run():
-    for i in range(0, arg.iterations):
+    for i in range(0, int(arg.iterations)):
         sign(i)
         time.sleep(0.001) 
     low =  min(results)
