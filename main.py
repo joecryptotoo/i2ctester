@@ -18,7 +18,7 @@ slotId = int(arg.slot)
 it = int(arg.iterations)
 i2c = busio.I2C(board.SCL, board.SDA, frequency=_WAKE_CLK_FREQ)
 
-atecc = ATECC(i2c,address=int(arg.i2c_address,16),debug=True)
+atecc = ATECC(i2c,address=int(arg.i2c_address,16),debug=arg.debug)
 
 results = []
 
