@@ -1,0 +1,2 @@
+rpi.gpio
+adafruit-circuitpython-atecc

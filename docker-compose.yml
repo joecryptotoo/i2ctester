@@ -1,0 +1,16 @@
+---
+version: "2.1"
+services:
+
+  i2ctester:
+    build:
+      context: ./
+    network_mode: host
+    volumes:
+      - /proc:/hostfs/proc
+    privileged: true 
+    cap_add:
+      - SYS_RAWIO
+    devices:
+      - /dev/i2c-1:/dev/i2c-1
+    command: python /usr/src/app/main.py
